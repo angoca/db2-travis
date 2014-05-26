@@ -6,9 +6,7 @@ before_install:
   - tar zvxf v10.5fp1_linuxx64_expc.tar.gz
   - cd expc
   - ./db2prereqcheck -i
-  - ./db2_install
-  - #sed 's/\# deb http:\/\/archive.canonical.com\/ubuntu precise partner/deb http:\/\/archive.canonical.com\/ubuntu precise partner/g' /etc/apt/sources.list > /tmp/sources.list.tmp
-  - #sudo chown root.root /tmp/sources.list.tmp
-  - #sudo mv /etc/apt/sources.list /etc/apt/sources.list.copy
-  - #sudo mv /tmp/sources.list.tmp /etc/apt/sources.list
-  - #sudo apt-get install db2exc
+  - find /lib -name "libpam.so*"
+  - echo "sudo ./db2_install" > execInst
+  - chmod 777 execInst
+  - sudo ./execInst
