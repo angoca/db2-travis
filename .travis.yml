@@ -1,5 +1,4 @@
 before_install:
   - sudo apt-get update -qq
-  - cat /etc/apt/sources.list
-  - sed 's/#deb http://archive.canonical.com/ubuntu lucid partner/deb http://archive.canonical.com/ubuntu lucid partner/g' /etc/apt/sources.list
+  - sed 's/#deb http://archive.canonical.com/ubuntu precise partner/deb http://archive.canonical.com/ubuntu precise partner/g' /etc/apt/sources.list
   - sudo apt-get install -y db2 db2-dev
