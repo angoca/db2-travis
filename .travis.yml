@@ -1,4 +1,14 @@
 before_install:
   - sudo apt-get update -qq
-  - sed 's/#deb http://archive.canonical.com/ubuntu precise partner/deb http://archive.canonical.com/ubuntu precise partner/g' /etc/apt/sources.list
-  - sudo apt-get install -y db2 db2-dev
+  - sudo apt-get -y install libaio1 ksh libstdc++6-4.4-pic libstdc++6-4.4-dev libstdc++5 rpm
+  - cd /tmp
+  - wget https://iwm.dhe.ibm.com/sdfdl/v2/regs2/db2pmopn/db2_v105/expc/Xa.2/Xb.aA_60_-idZcPt9tXWVNRLjP1JF9P_RkQwewJfoiVqA/Xc.db2_v105/expc/v10.5fp1_linuxx64_expc.tar.gz/Xd./Xf.LPr.D1vk/Xg.7575683/Xi.swg-db2expressc/XY.regsrvs/XZ.NakzBJGvGJqAVUI5kAxfrEDaJNc/v10.5fp1_linuxx64_expc.tar.gz
+  - tar zvxf v10.5fp1_linuxx64_expc.tar.gz
+  - cd expc
+  - ./db2prereqcheck -i
+  - ./db2_install
+  - #sed 's/\# deb http:\/\/archive.canonical.com\/ubuntu precise partner/deb http:\/\/archive.canonical.com\/ubuntu precise partner/g' /etc/apt/sources.list > /tmp/sources.list.tmp
+  - #sudo chown root.root /tmp/sources.list.tmp
+  - #sudo mv /etc/apt/sources.list /etc/apt/sources.list.copy
+  - #sudo mv /tmp/sources.list.tmp /etc/apt/sources.list
+  - #sudo apt-get install db2exc
