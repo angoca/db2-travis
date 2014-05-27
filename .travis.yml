@@ -20,8 +20,8 @@ before_install:
 
 install:
   # Retrieves and extract db2unit
-  - wget https://github.com/angoca/db2unit/archive/db2unit-1-Alpha.tar.gz
-  - tar zxvf db2unit-1-Alpha.tar.gz
+  - wget https://github.com/angoca/db2unit/releases/download/db2unit-1-Alpha/db2unit.tar.gz
+  - tar zxvf db2unit.tar.gz
   # Install db2unit
   - cd db2unit
   - . ~db2inst1/sqllib/db2profile
