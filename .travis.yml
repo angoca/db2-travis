@@ -10,3 +10,7 @@ before_install:
   - ./db2prereqcheck -i
   - find /lib -name "libpam.so*"
   - sudo ./db2setup -r /home/travis/build/angoca/db2-travis/db2expc.rsp
+  - su - db2inst1
+  - db2 create db test
+
+
