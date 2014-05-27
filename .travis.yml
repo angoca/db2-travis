@@ -12,7 +12,7 @@ before_install:
   # Checks the prerequisites
   - ./db2prereqcheck -i
   # Install DB2 and creates an instance (Response file)
-  - sudo ./db2setup -r /home/travis/build/angoca/db2-travis/db2expc.rsp
+  - sudo ./db2setup -r /home/travis/build/angoca/db2-travis/db2expc.rsp || cat /tmp/db2setup.log
   # Creates the database
   - sudo su - db2inst1 -c "db2start"
   - sudo su - db2inst1 -c "db2 create db test"
