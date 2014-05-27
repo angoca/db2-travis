@@ -1,12 +1,24 @@
 before_install:
+  # Install the required libraries
   - sudo apt-get update -qq
   - sudo apt-get -y install libaio1 ksh libstdc++6-4.4-pic libstdc++6-4.4-dev libstdc++5 rpm
+  - sudo apt-get install libpam0g:i386
+  # Retrieves and extracts the DB2 binaries
   - cd /tmp
   - wget https://iwm.dhe.ibm.com/sdfdl/v2/regs2/db2pmopn/db2_v105/expc/Xa.2/Xb.aA_60_-idZcPt9tXWVNRLjP1JF9P_RkQwewJfoiVqA/Xc.db2_v105/expc/v10.5fp1_linuxx64_expc.tar.gz/Xd./Xf.LPr.D1vk/Xg.7575683/Xi.swg-db2expressc/XY.regsrvs/XZ.NakzBJGvGJqAVUI5kAxfrEDaJNc/v10.5fp1_linuxx64_expc.tar.gz
   - tar zvxf v10.5fp1_linuxx64_expc.tar.gz
   - cd expc
+  # Checks the prerequisites
   - ./db2prereqcheck -i
-  - find /lib -name "libpam.so*"
+  # Install DB2 and creates an instance (Response file)
   - sudo ./db2setup -r /home/travis/build/angoca/db2-travis/db2expc.rsp || true
-  - su - db2inst1
+  # Creates the database
+  - sudo su - db2inst1
   - db2 create db test
+
+install:
+  # ./install-dependencies.sh
+
+script:
+  # db2 -tf xxx
+  # install script
