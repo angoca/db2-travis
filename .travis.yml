@@ -32,3 +32,4 @@ install:
 script:
   # db2 -tf xxx
   # install script
+  - echo hola
