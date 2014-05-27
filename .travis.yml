@@ -1,6 +1,4 @@
 before_install:
-  - pwd
-  - ls -l
   - sudo apt-get update -qq
   - sudo apt-get -y install libaio1 ksh libstdc++6-4.4-pic libstdc++6-4.4-dev libstdc++5 rpm
   - cd /tmp
@@ -9,8 +7,6 @@ before_install:
   - cd expc
   - ./db2prereqcheck -i
   - find /lib -name "libpam.so*"
-  - sudo ./db2setup -r /home/travis/build/angoca/db2-travis/db2expc.rsp
+  - sudo ./db2setup -r /home/travis/build/angoca/db2-travis/db2expc.rsp || true
   - su - db2inst1
   - db2 create db test
-
-
