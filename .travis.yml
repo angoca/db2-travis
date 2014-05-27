@@ -1,3 +1,4 @@
+language: sql-pl
 before_install:
   # Install the required libraries
   - sudo apt-get update -qq
