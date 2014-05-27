@@ -3,7 +3,7 @@ before_install:
   - sudo apt-get update -qq
   #- sudo apt-get -y install libaio1 ksh libstdc++6-4.4-pic libstdc++6-4.4-dev libstdc++5 rpm
   - sudo apt-get install libpam0g:i386
-  #- sudo ln -s /lib/i386-linux-gnu/libpam.so.0 /lib/libpam.so.0
+  - sudo ln -s /lib/i386-linux-gnu/libpam.so.0 /lib/libpam.so.0
   # Retrieves and extracts the DB2 binaries
   - cd /tmp
   - wget https://iwm.dhe.ibm.com/sdfdl/v2/regs2/db2pmopn/db2_v105/expc/Xa.2/Xb.aA_60_-idZcPt9tXWVNRLjP1JF9P_RkQwewJfoiVqA/Xc.db2_v105/expc/v10.5fp1_linuxx64_expc.tar.gz/Xd./Xf.LPr.D1vk/Xg.7575683/Xi.swg-db2expressc/XY.regsrvs/XZ.NakzBJGvGJqAVUI5kAxfrEDaJNc/v10.5fp1_linuxx64_expc.tar.gz
@@ -12,7 +12,7 @@ before_install:
   # Checks the prerequisites
   - ./db2prereqcheck -i
   # Install DB2 and creates an instance (Response file)
-  - sudo ./db2setup -r /home/travis/build/angoca/db2-travis/db2expc.rsp || true
+  - sudo ./db2setup -r /home/travis/build/angoca/db2-travis/db2expc.rsp
   # Creates the database
   - sudo su - db2inst1 -c "db2start"
   - sudo su - db2inst1 -c "db2 create db test"
