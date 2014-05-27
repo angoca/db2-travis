@@ -7,4 +7,4 @@ before_install:
   - cd expc
   - ./db2prereqcheck -i
   - find /lib -name "libpam.so*"
-  - sudo ./db2setup -r /home/travis/build/angoca/db2-travis/db2expc.rsp
+  - sudo ./db2setup -r /home/travis/build/angoca/db2-travis/db2expc.rsp || true
