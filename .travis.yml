@@ -14,11 +14,18 @@ before_install:
   # Install DB2 and creates an instance (Response file)
   - sudo ./db2setup -r /home/travis/build/angoca/db2-travis/db2expc.rsp || true
   # Creates the database
-  - sudo su - db2inst1
-  - db2 create db test
+  - sudo su - db2inst1 -c "db2 create db test"
+  - sudo su - db2inst1 -c "db2 connect to test;db2 grant dbadm on database to user $USER"
 
 install:
-  # ./install-dependencies.sh
+  # Retrieves and extract db2unit
+  - wget https://github.com/angoca/db2unit/archive/db2unit-1-Alpha.tar.gz
+  - tar zxvf db2unit-1-Alpha.tar.gz
+  # Install db2unit
+  - cd db2unit
+  - . ~db2inst1/sqllib/db2profile
+  - db2 connect to test
+  - . ./install
 
 script:
   # db2 -tf xxx
