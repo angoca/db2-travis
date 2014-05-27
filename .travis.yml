@@ -14,6 +14,7 @@ before_install:
   # Install DB2 and creates an instance (Response file)
   - sudo ./db2setup -r /home/travis/build/angoca/db2-travis/db2expc.rsp || true
   # Creates the database
+  - sudo su - db2inst1 -c "db2start"
   - sudo su - db2inst1 -c "db2 create db test"
   - sudo su - db2inst1 -c "db2 connect to test;db2 grant dbadm on database to user $USER"
 
