@@ -193,7 +193,7 @@ DB2_INST.GROUP_NAME       = db2iadm1        ** char(30) no spaces
 ** Use a generated GID if no value provided - highly recommended.
 *DB2_INST.GID             =                 ** Unsigned integer
 DB2_INST.HOME_DIRECTORY   =                 ** char(64) no spaces. Valid for root installation only
-DB2_INST.PASSWORD         = Replace with your password ** Valid for root installation only
+DB2_INST.PASSWORD         = db2admin        ** Valid for root installation only
 *DB2_INST.TYPE            = WSE             ** WSE STANDALONE CLIENT
 
 ** Set the instance to be auto-started after system reboot. The AUTOSTART
@@ -218,12 +218,12 @@ DB2_INST.START_DURING_INSTALL = YES         ** YES or NO. Default is YES.
 
 ** Make sure the user name specified for FENCED_USERNAME is not locked and its
 ** password has not expired.
-DB2_INST.FENCED_USERNAME  = db2sdfe1        ** char(8)  no spaces, no upper case letters
+DB2_INST.FENCED_USERNAME  = db2fenc1        ** char(8)  no spaces, no upper case letters
 
 ** If no value is provided for FENCED_UID keyword, the DB2 installer will
 ** generate one for you. This is highly recommended.
 *DB2_INST.FENCED_UID      =                 ** Unsigned integer
-DB2_INST.FENCED_GROUP_NAME = db2fsdm1       ** char(30)  no spaces
+DB2_INST.FENCED_GROUP_NAME = db2fenc1       ** char(30)  no spaces
 
 ** If no value is provided for FENCED_GID keyword, the DB2 installer will
 ** generate one for you. This is highly recommended.
@@ -231,7 +231,7 @@ DB2_INST.FENCED_GROUP_NAME = db2fsdm1       ** char(30)  no spaces
 *DB2_INST.FENCED_HOME_DIRECTORY =           ** char(64) no spaces
 
 ** This FENCED_PASSWORD is required if the fenced user ID is a new user
-*DB2_INST.FENCED_PASSWORD =                 ** char(8)
+DB2_INST.FENCED_PASSWORD = db2fence        ** char(8)
 
 ** Text Search Configuration
 ** -------------------------
