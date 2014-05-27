@@ -7,6 +7,4 @@ before_install:
   - cd expc
   - ./db2prereqcheck -i
   - find /lib -name "libpam.so*"
-  - echo "sudo ./db2_install" > execInst
-  - chmod 777 execInst
-  - sudo ./execInst
+  - sudo ./db2setup -r ~/angoca/db2-travis/db2expc.rsp
