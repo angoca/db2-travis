@@ -1,35 +1,60 @@
 language: sql-pl
 before_install:
+  # Parallel download
+  - mvn > /dev/null &
+  - sudo apt-get install aria2 -y
+  - sudo ./travis/update.sh > /dev/null &
+
+  # Retrieves and extracts the DB2 binaries
+  # If it does not work, change it according to the next page:
+  # http://www.ibm.com/support/fixcentral/swg/quickorder?product=ibm/Information+Management/DB2&release=10.5.*&platform=Linux+64-bit,x86_64&function=fixId&fixids=DB2-linuxx64-server_t-10.5.0.4-FP004&includeRequisites=1&includeSupersedes=0&downloadMethod=http&source=fc
+  - cd /tmp ; aria2c -x 16 https://delivery04.dhe.ibm.com/sdfdl/v2/sar/CM/IM/04qts/0/Xa.2/Xb.jusyLTSp44S03WBleB_843yZ1M2TpxpbAUQYQHHST1MSF6rM-yEskGR18T0/Xc.CM/IM/04qts/0/v10.5fp4_linuxx64_server_t.tar.gz/Xd./Xf.LPR.D1vk/Xg.7735247/Xi.habanero/XY.habanero/XZ.aN6T3huH_q_HyGslJlMuIU-XsXg/v10.5fp4_linuxx64_server_t.tar.gz ; tar zxvf v10.5fp4_linuxx64_server_t.tar.gz
+
+  # Retrieves and extract log4db2
+  - cd ; wget https://github.com/angoca/log4db2/releases/download/log4db2-1-Beta-A/log4db2.tar.gz ; tar zxvf log4db2.tar.gz
+
+  # Retrieves and extract db2unit
+  - cd ; wget https://github.com/angoca/db2unit/releases/download/db2unit-1-Beta/db2unit.tar.gz ; tar zxvf db2unit.tar.gz
+
+
+  # INSTALL
+
   # Install the required libraries
   - sudo apt-get update -qq
-  - sudo apt-get -y install libaio1 ksh libstdc++6-4.4-pic libstdc++6-4.4-dev libstdc++5 rpm
-  - sudo apt-get -y install libpam0g:i386
+  - sudo apt-get install libaio1 lib32stdc++6 -y
+  - sudo apt-get install -qq libpam-ldap:i386
   - sudo ln -s /lib/i386-linux-gnu/libpam.so.0 /lib/libpam.so.0
-  - sudo apt-get install numactl
-  # Retrieves and extracts the DB2 binaries
-  - cd /tmp
-  - wget https://iwm.dhe.ibm.com/sdfdl/v2/regs2/db2pmopn/db2_v105/expc/Xa.2/Xb.aA_60_-idZcPt9tXWVNRLjP1JF9P_RkQwewJfoiVqA/Xc.db2_v105/expc/v10.5fp1_linuxx64_expc.tar.gz/Xd./Xf.LPr.D1vk/Xg.7575683/Xi.swg-db2expressc/XY.regsrvs/XZ.NakzBJGvGJqAVUI5kAxfrEDaJNc/v10.5fp1_linuxx64_expc.tar.gz
-  - tar zvxf v10.5fp1_linuxx64_expc.tar.gz
-  - cd expc
+
   # Checks the prerequisites
-  - ./db2prereqcheck -i
+  - cd /tmp/server_t ; ./db2prereqcheck -l
   # Install DB2 and creates an instance (Response file)
-  - sudo ./db2setup -r /home/travis/build/angoca/db2-travis/db2expc.rsp || cat /tmp/db2setup.log
+  - sudo ./db2setup -r  ${TRAVIS_BUILD_DIR}/travis/db2.rsp || cat /tmp/db2setup.log
+  # Changes the security
+  - sudo usermod -a -G db2iadm1 $USER
+  - sudo chsh -s /bin/bash db2inst1
+  - sudo su - db2inst1 -c "db2 update dbm cfg using SYSADM_GROUP db2iadm1 ; db2stop ; db2start"
   # Creates the database
-  - sudo su - db2inst1 -c "db2 create db test"
-  - sudo su - db2inst1 -c "db2 connect to test;db2 grant dbadm on database to user $USER"
+  - sudo su - db2inst1 -c "db2 create db travis ; db2 connect to travis ; db2 grant dbadm on database to user $USER"
+  - . ~db2inst1/sqllib/db2profile ; db2 connect to travis
 
 install:
-  # Retrieves and extract db2unit
-  - wget https://github.com/angoca/db2unit/releases/download/db2unit-1-Alpha/db2unit.tar.gz
-  - tar zxvf db2unit.tar.gz
+  # Install log4db2
+  - cd ; cd log4db2 ; . ./install
+
   # Install db2unit
-  - cd db2unit
-  - . ~db2inst1/sqllib/db2profile
-  - db2 connect to test
-  - . ./install
+  - cd ; cd db2unit ; . ./install
+
+  # Install your code
+  # - db2 -tf xxx
 
 script:
-  # db2 -tf xxx
-  # install script
-  - echo hola
+  # Execute your scripts
+  # - db2 "call db2unit.run_suite('MY_SUITE')"
+
+after_failure:
+  # If there is any error, shows the logs
+  - cat /home/db2inst1/sqllib/db2dump/db2diag.log
+  - db2 "call logadmin.logs"
+  - db2 "select * from DB2UNIT_1B.EXECUTION_REPORTS"
+  - db2 "select * from MY_SUITE.REPORT_TESTS"
+  - db2 "export to /tmp/sorts.txt of del select * from DB2UNIT_1B.SORTS" ; cat /tmp/sorts.txt
