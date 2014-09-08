@@ -50,6 +50,7 @@ install:
 script:
   # Execute your scripts
   # - db2 "call db2unit.run_suite('MY_SUITE')"
+  - echo Hola
 
 after_failure:
   # If there is any error, shows the logs
