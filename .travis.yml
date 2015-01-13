@@ -84,5 +84,5 @@ after_failure:
   - db2 "select * from DB2UNIT_1.EXECUTION_REPORTS"
   - db2 "select * from MY_SUITE.REPORT_TESTS"
   - db2 "export to /tmp/sorts.txt of del select * from DB2UNIT_1.SORTS" ; cat /tmp/sorts.txt
- - cat /home/db2inst1/sqllib/db2dump/db2diag.log
+  - cat /home/db2inst1/sqllib/db2dump/db2diag.log
 
