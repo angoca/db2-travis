@@ -44,11 +44,11 @@ before_install:
 
   # INSTALL
 
-  - while [ $(tail -1 /tmp/apt.output) != "Finished" ] ; do sleep 2 ; done ; cat /tmp/apt.output
+  - while [[ "$(tail -1 /tmp/apt.output)" != "Finished" ]] ; do grep ">>" /tmp/apt.output ; sleep 2 ; done ; cat /tmp/apt.output
   - sudo ln -s /lib/i386-linux-gnu/libpam.so.0 /lib/libpam.so.0
 
   # Checks the prerequisites
-  - cd /tmp/expc ; ./db2prereqcheck -v
+  - cd /tmp/expc ; ./db2prereqcheck -i 
   # Install DB2 and creates an instance (Response file)
   - sudo ./db2setup -r  ${TRAVIS_BUILD_DIR}/travis/db2.rsp || cat /tmp/db2setup.log
   # Changes the security
