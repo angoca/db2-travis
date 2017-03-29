@@ -25,6 +25,7 @@ before_install:
   # Parallel download
   - mvn > /dev/null &
   - sudo apt-get install aria2 curl -y
+  - find .
   - sudo ./travis/update.sh > /dev/null &
 
   # Retrieves and extracts the DB2 binaries
@@ -48,7 +49,7 @@ before_install:
   - sudo ln -s /lib/i386-linux-gnu/libpam.so.0 /lib/libpam.so.0
 
   # Checks the prerequisites
-  - cd /tmp/server_t ; ./db2prereqcheck -l
+  - cd /tmp/expc ; ./db2prereqcheck -l
   # Install DB2 and creates an instance (Response file)
   - sudo ./db2setup -r  ${TRAVIS_BUILD_DIR}/travis/db2.rsp || cat /tmp/db2setup.log
   # Changes the security
