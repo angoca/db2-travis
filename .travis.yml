@@ -21,7 +21,7 @@
 # Author: Andres Gomez Casanova (AngocA)
 # Made in COLOMBIA.
 
-#dist: trusty
+dist: trusty
 sudo: required
 
 before_install:
@@ -44,15 +44,11 @@ before_install:
 
   # INSTALL
 
-  - cat /tmp/apt.output
-  # Install the required libraries
-  - sudo apt-get update -qq
-  - sudo apt-get install libaio1 lib32stdc++6 rpm -y
-  #- sudo apt-get install -qq libpam-ldap:i386
+  - while [ $(tail -1 /tmp/apt.output) != "Finished" ] ; do sleep 2 ; done ; cat /tmp/apt.output
   - sudo ln -s /lib/i386-linux-gnu/libpam.so.0 /lib/libpam.so.0
 
   # Checks the prerequisites
-  - cd /tmp/expc ; ./db2prereqcheck -l
+  - cd /tmp/expc ; ./db2prereqcheck -v
   # Install DB2 and creates an instance (Response file)
   - sudo ./db2setup -r  ${TRAVIS_BUILD_DIR}/travis/db2.rsp || cat /tmp/db2setup.log
   # Changes the security
